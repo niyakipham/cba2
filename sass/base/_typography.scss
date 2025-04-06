@@ -1,0 +1,90 @@
+// _typography.scss
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+    color: $space-text;
+  }
+  
+  h1 {
+    font-size: 4rem;
+    background: linear-gradient(90deg, $space-text, $space-accent);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    position: relative;
+    display: inline-block;
+    
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, $space-accent, transparent);
+      border-radius: 3px;
+    }
+  }
+  
+  h2 {
+    font-size: 3rem;
+    margin-top: 4rem;
+    position: relative;
+    padding-left: 2rem;
+    
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0.5rem;
+      height: 2rem;
+      width: 0.5rem;
+      background: $space-accent;
+      border-radius: 0.5rem;
+    }
+  }
+  
+  a {
+    color: $space-accent;
+    text-decoration: none;
+    transition: $transition-base;
+    
+    &:hover {
+      color: lighten($space-accent, 10%);
+    }
+  }
+  
+  code {
+    font-family: $font-mono;
+    background: rgba(100, 255, 218, 0.1);
+    padding: 0.2rem 0.4rem;
+    border-radius: 0.3rem;
+    font-size: 90%;
+  }
+  
+  pre {
+    background: $space-secondary;
+    padding: 2rem;
+    border-radius: 0.5rem;
+    overflow-x: auto;
+    margin: 2rem 0;
+    box-shadow: $shadow-md;
+    position: relative;
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, $space-accent, #5e78ff, #ff5e9a);
+      border-radius: 0.5rem 0.5rem 0 0;
+    }
+    
+    code {
+      background: transparent;
+      padding: 0;
+    }
+  }

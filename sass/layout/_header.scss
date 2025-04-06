@@ -1,0 +1,53 @@
+// _header.scss
+.hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 15rem 0;
+    position: relative;
+    overflow: hidden;
+    
+    &__content {
+      max-width: 60rem;
+      position: relative;
+      z-index: 2;
+    }
+    
+    &__title {
+      font-size: 5rem;
+      margin-bottom: 2rem;
+      line-height: 1.2;
+    }
+    
+    &__subtitle {
+      color: $space-accent;
+      font-size: 2rem;
+      margin-bottom: 3rem;
+      font-family: $font-mono;
+    }
+    
+    &__desc {
+      font-size: 1.8rem;
+      margin-bottom: 4rem;
+      color: $space-text-secondary;
+    }
+    
+    &__buttons {
+      display: flex;
+      gap: 2rem;
+    }
+    
+    &__decoration {
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 50%;
+      max-width: 60rem;
+      opacity: 0.7;
+      
+      @media (max-width: $breakpoint-lg) {
+        display: none;
+      }
+    }
+  }

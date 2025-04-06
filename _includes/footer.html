@@ -1,0 +1,29 @@
+<!-- _includes/footer.html -->
+<footer class="footer">
+    <div class="container">
+      <a href="{{ '/' | relative_url }}" class="footer__logo">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+          <line x1="12" y1="17" x2="12.01" y2="17"></line>
+        </svg>
+        {{ site.title }}
+      </a>
+      
+      <p class="footer__desc">
+        {{ site.description }}
+      </p>
+      
+      <div class="footer__social">
+        {% for item in site.data.social %}
+          <a href="{{ item.link }}" target="_blank" class="btn btn--icon" data-bs-toggle="tooltip" title="{{ item.name }}">
+            <i class="{{ item.icon }}"></i>
+          </a>
+        {% endfor %}
+      </div>
+      
+      <p class="footer__copy">
+        &copy; {{ site.time | date: '%Y' }} {{ site.title }}. All rights reserved.
+      </p>
+    </div>
+  </footer>

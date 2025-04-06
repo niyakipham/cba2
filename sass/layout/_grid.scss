@@ -1,0 +1,18 @@
+// _grid.scss
+.container {
+    width: 100%;
+    max-width: 120rem;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+  
+  .grid {
+    display: grid;
+    gap: 3rem;
+    
+    &--docs {
+      grid-template-columns: repeat(auto-fill, minmax(30rem, 1fr));
+      margin: 5rem 0;
+    }
+  }
+  
