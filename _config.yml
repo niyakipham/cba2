@@ -1,8 +1,8 @@
 title: Knowledge Nebula
 description: Nơi chia sẻ tài liệu học tập chất lượng từ cộng đồng
-url: "https://yourusername.github.io"
-baseurl: "/repository-name" # Nếu dùng custom domain thì để ""
-repository: yourusername/repository-name
+url: "https://niyakipham.github.io"
+baseurl: "/cba2" # Nếu dùng custom domain thì để ""
+repository: niyakipham/cba2
 
 # Theme settings
 theme_color: "#0a192f"
