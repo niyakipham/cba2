@@ -1,0 +1,29 @@
+title: Knowledge Nebula
+description: Nơi chia sẻ tài liệu học tập chất lượng từ cộng đồng
+url: "https://yourusername.github.io"
+baseurl: "/repository-name" # Nếu dùng custom domain thì để ""
+repository: yourusername/repository-name
+
+# Theme settings
+theme_color: "#0a192f"
+accent_color: "#64ffda"
+logo: "/assets/images/logo.svg"
+
+# Build settings
+markdown: kramdown
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+
+# Collections
+collections:
+  docs:
+    output: true
+    permalink: /docs/:path/
+
+defaults:
+  - scope:
+      path: ""
+      type: docs
+    values:
+      layout: doc
