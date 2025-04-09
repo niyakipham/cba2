@@ -1,91 +1,272 @@
-// _cards.scss
-.doc-card {
-    background: $space-secondary;
-    border-radius: 1rem;
-    overflow: hidden;
-    transition: $transition-base;
-    position: relative;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    box-shadow: $shadow-md;
-    
-    &::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(135deg, rgba(100, 255, 218, 0.1) 0%, transparent 50%);
-      opacity: 0;
-      transition: $transition-base;
-    }
-    
-    &:hover {
-      transform: translateY(-5px);
-      box-shadow: $shadow-lg;
-      
-      &::before {
-        opacity: 1;
-      }
-      
-      .doc-card__image {
-        transform: scale(1.05);
-      }
-      
-      .doc-card__title {
-        color: $space-accent;
-      }
-    }
-    
+// _sass/components/_cards.scss
+@use "../base/variables" as *;
+
+// === Base Card Style ===
+.card, // Generic card class
+.document-card // Specific card class
+{
+  background-color: $color-surface;
+  border: $border-width solid $color-border;
+  border-radius: $border-radius;
+  padding: $spacing-unit-md; // ~24px padding
+  margin-bottom: $spacing-unit-lg; // Space below card
+  box-shadow: $box-shadow;
+  transition: transform $transition-speed-normal $easing-cubic,
+              box-shadow $transition-speed-normal $easing-cubic,
+              border-color $transition-speed-normal $easing-cubic;
+  overflow: hidden; // Clip child elements like hover effects
+  position: relative; // For absolute positioning of children/pseudo-elements
+  display: flex; // Use flexbox for internal layout
+  flex-direction: column; // Stack content vertically
+
+  // Target class for JS scroll animation
+  &.animate-on-scroll {
+    opacity: 0;
+    transform: translateY(40px); // Start lower
+    will-change: opacity, transform; // Performance hint for browser
+  }
+
+  // --- Hover & Focus States ---
+  &:hover,
+  &:focus-within { // Apply similar style when an element inside receives focus
+    transform: translateY(-6px) scale(1.01); // More noticeable lift
+    box-shadow: $box-shadow-lg;
+    border-color: $color-border-hover;
+  }
+
+   // --- Interactive Border Accent on Hover ---
+   &::before {
+     content: '';
+     position: absolute;
+     top: 0;
+     left: 0;
+     width: 4px; // Thicker accent line
+     height: 100%;
+     background: linear-gradient(to bottom, $color-primary, $color-secondary); // Gradient accent
+     transform: scaleY(0);
+     transform-origin: bottom; // Animate from bottom
+     transition: transform $transition-speed-normal $easing-out-expo;
+     z-index: $z-index-base;
+     opacity: 0.7;
+   }
+
+    &:hover::before,
+    &:focus-within::before {
+      transform: scaleY(1);
+      transform-origin: top; // Animate back from top if desired, or keep bottom
+      opacity: 1;
+   }
+
+
+   // === Card Internal Structure (using BEM-like naming for document-card) ===
+
+   // --- Optional Card Image ---
     &__image {
-      height: 18rem;
-      width: 100%;
-      object-fit: cover;
-      transition: $transition-slow;
+       margin: -$spacing-unit-md (-$spacing-unit-md) $spacing-unit-md (-$spacing-unit-md); // Negative margin to bleed to edges
+       overflow: hidden; // Keep image corners rounded if image isn't
+
+        img {
+            display: block;
+            width: 100%;
+            height: auto; // Maintain aspect ratio
+             // Consider adding fixed height/aspect ratio for consistency:
+             // height: 180px;
+             // object-fit: cover;
+            border-top-left-radius: calc(#{$border-radius} - #{$border-width}); // Match card radius accounting for border
+            border-top-right-radius: calc(#{$border-radius} - #{$border-width});
+            transition: transform $transition-speed-slow $easing-cubic, filter $transition-speed-slow;
+            filter: grayscale(30%) brightness(90%); // Subtle sci-fi effect
+        }
+         // Hover effect on image container
+         &:hover img {
+             transform: scale(1.05); // Zoom effect
+             filter: grayscale(0%) brightness(100%); // Restore color/brightness
+         }
+         a { // Ensure link covers image well
+             display: block;
+         }
     }
-    
-    &__content {
-      padding: 2rem;
-      flex: 1;
+
+
+   // --- Card Content Area ---
+   &__content {
+     padding-top: $spacing-unit-sm; // Add space if no image, or less space after image
+     flex: 1; // Allow content to grow and push footer down
       display: flex;
       flex-direction: column;
-    }
-    
-    &__title {
-      font-size: 2rem;
-      margin-bottom: 1rem;
-      transition: $transition-base;
-    }
-    
-    &__desc {
-      color: $space-text-secondary;
-      margin-bottom: 2rem;
-      flex: 1;
-    }
-    
-    &__meta {
+   }
+
+    // --- Top Meta (Category, Date) ---
+    &__meta-top {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-top: auto;
-      font-size: 1.4rem;
-      color: $space-text-secondary;
+      margin-bottom: $spacing-unit-sm;
+      font-size: 0.8rem;
+      color: $color-text-muted;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
     }
-    
-    &__tags {
+    &__category {
+      a {
+        color: $color-accent; // Use accent color for category
+        font-weight: $font-weight-semibold;
+        transition: color $transition-speed-fast;
+        &:hover {
+            color: lighten($color-accent, 10%);
+        }
+      }
+    }
+    &__date {
+       display: inline-flex; // Align icon and text
+       align-items: center;
+       gap: $spacing-unit-xs;
+    }
+
+
+    // --- Card Title ---
+   &__title {
+      font-size: 1.4rem; // Slightly larger title
+      font-weight: $font-weight-semibold;
+      color: $color-heading; // Use heading color for title
+      margin-bottom: $spacing-unit-sm;
+      line-height: 1.3;
+
+      a {
+         color: inherit;
+         text-decoration: none;
+
+          // Underline animation on hover
+          background-image: linear-gradient($color-primary, $color-primary);
+          background-size: 0% 2px; // Start with 0 width, 2px height
+          background-repeat: no-repeat;
+          background-position: left bottom; // Position at the bottom left
+          transition: background-size $transition-speed-normal $easing-out-expo;
+
+         &:hover, &:focus {
+            color: $color-primary; // Highlight color on hover
+             background-size: 100% 2px; // Expand underline to full width
+         }
+      }
+   }
+
+   // --- Card Description / Excerpt ---
+   &__description {
+      font-size: 0.95rem;
+      color: $color-text-secondary; // Secondary text color for excerpt
+      line-height: 1.6;
+      margin-bottom: $spacing-unit;
+       flex-grow: 1; // Push footer down
+   }
+
+
+   // --- Card Footer (Tags, Read More) ---
+    &__footer {
+      margin-top: auto; // Push footer to the bottom
+       padding-top: $spacing-unit; // Space above footer content
+      border-top: $border-width dashed $color-border; // Subtle separator
       display: flex;
-      gap: 0.5rem;
-      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+       font-size: 0.9rem;
+   }
+
+
+    // --- Tags within Footer ---
+    &__tags {
+       display: flex;
+       flex-wrap: wrap;
+       gap: $spacing-unit-xs;
+        align-items: center;
+
+        // Optional icon before tags
+         .fa-tag, .fa-tags {
+             color: $color-text-muted;
+             margin-right: $spacing-unit-sm;
+             font-size: 0.9em;
+         }
+    } // Individual tag styling comes from components/_tags.scss
+
+
+    // --- Read More Link ---
+     &__readmore {
+         color: $color-link;
+         font-weight: $font-weight-medium;
+         display: inline-flex;
+         align-items: center;
+         gap: $spacing-unit-xs;
+
+         i {
+             transition: transform $transition-speed-fast $easing-out-expo;
+             font-size: 0.8em;
+         }
+
+          &:hover, &:focus {
+              color: $color-link-hover;
+               i {
+                   transform: translateX(4px); // Move arrow slightly on hover
+               }
+          }
+      }
+
+    // === Card Modifiers ===
+
+    // --- Featured Card ---
+    &--featured {
+        border-left-width: 6px; // Make the ::before effect thicker/part of border
+        border-left-color: $color-primary; // Static colored border
+         box-shadow: 0 6px 20px rgba($color-primary, 0.15);
+
+         &::before { // Disable the animated border for featured card if using static one
+             display: none;
+         }
     }
-    
-    &__tag {
-      background: rgba(100, 255, 218, 0.1);
-      padding: 0.3rem 0.8rem;
-      border-radius: 1rem;
-      font-size: 1.2rem;
-      color: $space-accent;
-    }
-  }
-  
+
+    // --- Compact Card (for lists, maybe?) ---
+     &--compact {
+         padding: $spacing-unit;
+         flex-direction: row; // Horizontal layout
+         align-items: center;
+         gap: $spacing-unit;
+
+          &__image { // Adjust image styling for compact card
+             margin: 0; // Reset bleed margin
+             width: 80px; // Fixed small image
+             height: 60px;
+             object-fit: cover;
+             border-radius: $border-radius-sm;
+             flex-shrink: 0; // Prevent image from shrinking
+              img { border-radius: $border-radius-sm; }
+         }
+
+          &__content {
+             padding: 0; // Remove extra padding
+             flex: 1; // Take remaining space
+         }
+
+          &__title { font-size: 1.1rem; margin-bottom: $spacing-unit-xs;}
+          &__description { display: none; } // Hide description in compact view
+          &__footer { padding: 0; margin-top: $spacing-unit-sm; border: none; }
+          &__tags { font-size: 0.75rem;}
+          &__readmore { display: none; } // Hide readmore, title is the link
+
+           &:hover,
+          &:focus-within {
+               transform: translateY(-3px) scale(1.005); // Less dramatic hover
+          }
+     }
+
+
+   // --- Responsive Adjustments ---
+    @media (max-width: $breakpoint-md) {
+       padding: $spacing-unit; // Reduce padding on smaller screens
+        &__title { font-size: 1.25rem; }
+        &__description { font-size: 0.9rem; }
+   }
+   @media (max-width: $breakpoint-sm) {
+      margin-bottom: $spacing-unit-md; // Less space between cards on mobile
+      &__footer { flex-direction: column; align-items: flex-start; gap: $spacing-unit-sm;} // Stack footer items
+       &__readmore { margin-top: $spacing-unit-sm; }
+   }
+
+} // End .document-card

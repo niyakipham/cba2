@@ -1,0 +1,170 @@
+// _sass/components/_navbar.scss
+@use "../base/variables" as *;
+
+// Style the navigation within the header
+.site-header { // From _header.scss likely
+
+  .site-nav {
+    // Desktop Navigation Styles (visible > breakpoint)
+    .trigger { // This is the container for desktop nav links
+      display: flex;
+      gap: $spacing-unit; // Space between nav items
+
+       @media (max-width: $breakpoint-md) { // Hide desktop trigger on mobile
+            display: none;
+       }
+    }
+
+    .page-link {
+      display: block; // Ensure block display for padding/hover effects
+      padding: $spacing-unit-sm $spacing-unit; // Padding around links
+      color: $color-text-secondary; // Standard nav link color
+      text-transform: uppercase; // Sci-fi feel
+      font-size: 0.9rem;
+      font-weight: $font-weight-medium;
+      letter-spacing: 0.05em;
+      position: relative;
+      overflow: hidden; // For pseudo-element animations
+      transition: color $transition-speed-normal $easing-out-expo;
+
+       // --- Hover/Active State Indicator (Line Animation) ---
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: 5px; // Position the line slightly above the bottom
+        left: $spacing-unit; // Start inset
+        right: $spacing-unit; // End inset (width = 100% - 2 * inset)
+        height: 2px;
+        background-color: $color-primary;
+        transform: scaleX(0); // Start hidden
+        transform-origin: center; // Animate from center
+        transition: transform $transition-speed-normal $easing-out-expo;
+        opacity: 0.8;
+      }
+
+      &:hover,
+      &:focus,
+      &.active { // Style for current page link
+        color: $color-heading; // Brighter color on hover/active
+        outline: none; // Use ::after for focus indication
+
+        &::after {
+          transform: scaleX(1); // Expand line on hover/active/focus
+        }
+      }
+
+       // --- Specific Active State ---
+       &.active {
+         color: $color-primary; // Use primary color for active link text
+          font-weight: $font-weight-bold;
+       }
+    } // End .page-link
+
+    // Mobile Navigation Styles (visible <= breakpoint)
+    .nav-trigger { // The actual checkbox (hidden)
+      display: none; // Hide the checkbox itself
+    }
+
+    .nav-trigger-label { // The hamburger icon label
+      display: none; // Hidden by default, shown on mobile
+      cursor: pointer;
+      padding: $spacing-unit-sm;
+       position: relative;
+       z-index: $z-index-header + 1; // Ensure it's above content
+
+      @media (max-width: $breakpoint-md) {
+          display: flex; // Show on mobile
+          align-items: center;
+           gap: $spacing-unit-sm;
+           color: $color-text-secondary;
+           font-size: 0.9rem; // Size for "Menu" text if present
+           text-transform: uppercase;
+
+           &:hover { color: $color-primary;}
+       }
+    }
+
+    .menu-icon {
+        display: inline-block;
+        position: relative;
+        width: 18px; // Match SVG width
+        height: 15px; // Match SVG height
+
+        > svg {
+           fill: $color-text-secondary; // Hamburger color
+            transition: fill $transition-speed-fast;
+        }
+        &:hover > svg {
+             fill: $color-primary;
+        }
+    }
+
+
+     // Mobile Menu Panel (Triggered by checkbox)
+    .trigger { // Re-use trigger class for mobile panel
+      @media (max-width: $breakpoint-md) {
+         // Override desktop display:none
+         display: block; // Display as block when mobile menu is open
+         position: absolute;
+         top: 100%; // Position below the header
+         left: 0;
+         right: 0;
+         background-color: darken($color-surface, 5%); // Slightly darker background for contrast
+         border-top: $border-width solid $color-border;
+         box-shadow: 0 5px 15px rgba(black, 0.2);
+         padding: $spacing-unit;
+          max-height: 0; // Start hidden (height 0)
+          overflow: hidden; // Hide content when height is 0
+          opacity: 0;
+          visibility: hidden; // Hide from screen readers initially
+         transition: max-height $transition-speed-normal $easing-in-out-sine,
+                     opacity $transition-speed-normal ease-in-out,
+                     visibility $transition-speed-normal;
+         z-index: $z-index-header; // Ensure menu is above content below header
+
+
+         // Styles for links inside mobile menu
+          .page-link {
+             display: block; // Stack links vertically
+             padding: $spacing-unit $spacing-unit-md; // Adjust padding
+             margin: 0 (-$spacing-unit); // Use negative margin to extend hover bg full width
+             text-align: center;
+              border-bottom: $border-width solid rgba($color-border, 0.5); // Separator lines
+
+              &:last-child {
+                  border-bottom: none;
+              }
+
+              &:hover, &:focus, &.active {
+                   background-color: rgba($color-primary, 0.1); // Hover background
+                   color: $color-primary; // Hover text color
+                    &::after { transform: scaleX(0); } // Disable bottom line animation on mobile link hover
+              }
+                &.active { background: none; color: $color-primary;} // Active state distinct look
+         }
+       }
+    } // End mobile .trigger override
+
+    // --- Show mobile menu when checkbox is checked ---
+    .nav-trigger:checked ~ .trigger {
+       @media (max-width: $breakpoint-md) {
+         max-height: 500px; // Set a max-height large enough for content
+         opacity: 1;
+         visibility: visible;
+        }
+    }
+
+    // Optional: Animate hamburger icon to 'X' when active
+    .nav-trigger:checked ~ .nav-trigger-label {
+         // Style the label when menu is open (e.g., change color)
+         .menu-icon > svg {
+            // Complex animation would likely require 3 spans instead of SVG or more complex SVG structure
+            // Simple opacity change as placeholder
+            // opacity: 0.8;
+            fill: $color-primary; // Change icon color when active
+         }
+    }
+
+
+  } // End .site-nav
+}

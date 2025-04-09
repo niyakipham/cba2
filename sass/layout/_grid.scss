@@ -1,18 +1,122 @@
-// _grid.scss
-.container {
-    width: 100%;
-    max-width: 120rem;
-    margin: 0 auto;
-    padding: 0 2rem;
-  }
-  
-  .grid {
-    display: grid;
-    gap: 3rem;
-    
-    &--docs {
-      grid-template-columns: repeat(auto-fill, minmax(30rem, 1fr));
-      margin: 5rem 0;
+// _sass/layout/_grid.scss
+@use "../base/variables" as *;
+
+// === Basic Container ===
+.container,
+.header-container, // Allow direct use on header/footer inner divs
+.footer-container {
+  width: 100%;
+  max-width: $container-max-width; // Use the variable defined earlier
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: $container-padding-x; // Use variable for padding
+  padding-right: $container-padding-x;
+}
+
+// Fluid container (always 100% width)
+.container-fluid {
+  width: 100%;
+  padding-left: $container-padding-x;
+  padding-right: $container-padding-x;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+// === Simple Responsive Grid using Flexbox or CSS Grid ===
+// You might want a more robust grid system for complex layouts
+
+// -- Flexbox Based Grid Example --
+.grid-container {
+   display: flex;
+   flex-wrap: wrap; // Allow items to wrap to next line
+   margin-left: -$spacing-unit-sm; // Negative margin trick to handle item padding
+   margin-right: -$spacing-unit-sm; // Must be paired with padding on grid items
+}
+
+// Style for items within the flex grid
+// Add class like .grid-item or target direct children > *
+.grid-container > * { // Target direct children; more specific class is safer
+    padding-left: $spacing-unit-sm; // Gutters using padding
+    padding-right: $spacing-unit-sm;
+    margin-bottom: $spacing-unit-md; // Vertical spacing between rows
+     box-sizing: border-box; // Include padding in width calculation
+     width: 100%; // Default to full width on mobile
+}
+
+
+// Define column classes for different numbers of columns
+// Example: 2 column layout
+.grid-container--2-col {
+    @media (min-width: $breakpoint-md) { // Apply 2 columns on medium screens and up
+        > * {
+           width: 50%; // Each item takes half the width
+        }
     }
-  }
-  
+}
+
+// Example: 3 column layout
+.grid-container--3-col {
+   @media (min-width: $breakpoint-lg) { // 3 columns on large screens
+       > * {
+          width: calc(100% / 3); // Divide width by 3
+       }
+   }
+   @media (min-width: $breakpoint-md) and (max-width: $breakpoint-lg - 1px) { // 2 columns on medium
+       > * {
+          width: 50%;
+       }
+   }
+   // Mobile (default) is 1 column (width: 100%)
+}
+
+// Example: 4 column layout
+.grid-container--4-col {
+     @media (min-width: $breakpoint-xl) { // 4 cols on extra large
+         > * { width: 25%; }
+     }
+    @media (min-width: $breakpoint-lg) and (max-width: $breakpoint-xl - 1px) { // 3 cols on large
+         > * { width: calc(100% / 3); }
+     }
+     @media (min-width: $breakpoint-sm) and (max-width: $breakpoint-lg - 1px) { // 2 cols on small/medium
+          > * { width: 50%; }
+     }
+     // Mobile default 1 column
+}
+
+
+// -- CSS Grid Layout Example (Alternative) --
+.css-grid-container {
+    display: grid;
+    gap: $spacing-unit-md; // Use grid-gap for spacing
+     padding-left: $container-padding-x; // Add padding if container isn't used
+     padding-right: $container-padding-x;
+
+
+     // Define columns based on modifiers
+     &--2-col {
+         @media (min-width: $breakpoint-md) {
+             grid-template-columns: repeat(2, 1fr); // 2 equal columns
+         }
+     }
+      &--3-col {
+           @media (min-width: $breakpoint-md) {
+             grid-template-columns: repeat(2, 1fr); // 2 cols on medium
+           }
+          @media (min-width: $breakpoint-lg) {
+             grid-template-columns: repeat(3, 1fr); // 3 equal columns on large
+           }
+      }
+       &--4-col {
+           @media (min-width: $breakpoint-sm){ grid-template-columns: repeat(2, 1fr);}
+           @media (min-width: $breakpoint-lg){ grid-template-columns: repeat(3, 1fr);}
+            @media (min-width: $breakpoint-xl) { grid-template-columns: repeat(4, 1fr);}
+       }
+       // Default is single column as grid items stack by default
+}
+
+// Items inside CSS grid don't need negative margin/padding tricks if gap is used
+.css-grid-item {
+   // Add styles specific to grid items if necessary
+}
+

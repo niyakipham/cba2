@@ -1,65 +1,223 @@
-// _buttons.scss
+// _sass/components/_buttons.scss
+@use "../base/variables" as *;
+
 .btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1rem 2.5rem;
-    border-radius: 0.5rem;
-    font-weight: 500;
-    transition: $transition-base;
-    position: relative;
-    overflow: hidden;
-    border: none;
-    cursor: pointer;
-    font-size: 1.6rem;
-    
-    &--primary {
-      background: transparent;
-      color: $space-accent;
-      border: 1px solid $space-accent;
-      
-      &::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(100, 255, 218, 0.2), transparent);
-        transition: $transition-slow;
-      }
-      
-      &:hover {
-        box-shadow: $shadow-neon;
-        
-        &::before {
-          left: 100%;
-        }
-      }
+  display: inline-block; // Allows margin/padding
+  font-family: $font-primary;
+  font-size: $font-size-base;
+  font-weight: $font-weight-medium;
+  line-height: $line-height-base; // Match text line height
+  color: $color-text-primary; // Default text color
+  text-align: center;
+  text-decoration: none;
+  vertical-align: middle;
+  cursor: pointer;
+  user-select: none; // Prevent text selection on click
+  background-color: transparent; // Default background
+  border: $border-width solid transparent; // Default border
+  padding: $spacing-unit-sm $spacing-unit-md; // Adjust padding for size
+  border-radius: $border-radius; // Standard border radius
+  transition: color $transition-speed-fast ease-in-out,
+              background-color $transition-speed-fast ease-in-out,
+              border-color $transition-speed-fast ease-in-out,
+              box-shadow $transition-speed-fast ease-in-out,
+              transform $transition-speed-fast ease-in-out; // Smooth transitions
+
+  // Prevent double tap zoom on touch devices
+  touch-action: manipulation;
+
+  // Focus state - Use :focus-visible for keyboard users primarily
+  &:focus-visible {
+    outline: 0; // Remove default outline
+    box-shadow: $box-shadow-focus; // Use custom focus shadow
+  }
+
+   // Disabled state
+   &:disabled,
+   &.disabled {
+      opacity: 0.65;
+      pointer-events: none; // Prevent clicks
+      cursor: not-allowed;
+  }
+
+  // === Button Variants ===
+
+  // --- Primary Button (Main action) ---
+  &--primary {
+    color: $color-background; // Dark text on light button
+    background-color: $color-primary;
+    border-color: $color-primary;
+    box-shadow: 0 2px 5px rgba($color-primary, 0.2); // Subtle shadow
+
+    &:hover,
+    &:focus {
+        color: $color-background; // Keep text dark
+        background-color: darken($color-primary, 10%);
+        border-color: darken($color-primary, 12%);
+        box-shadow: 0 4px 10px rgba($color-primary, 0.3);
+        transform: translateY(-2px); // Slight lift effect
     }
-    
-    &--secondary {
-      background: rgba(100, 255, 218, 0.1);
-      color: $space-text;
-      backdrop-filter: blur(5px);
-      
-      &:hover {
-        background: rgba(100, 255, 218, 0.2);
-        box-shadow: $shadow-neon;
-      }
-    }
-    
-    &--icon {
-      padding: 1rem;
-      border-radius: 50%;
-      width: 4rem;
-      height: 4rem;
-      background: rgba(100, 255, 218, 0.1);
-      
-      &:hover {
-        background: rgba(100, 255, 218, 0.2);
-        transform: translateY(-3px);
-        box-shadow: $shadow-neon;
-      }
+    &:active {
+        transform: translateY(0); // Push down on active click
+        box-shadow: inset 0 1px 3px rgba(black, 0.2);
     }
   }
+
+  // --- Secondary Button (Alternative action) ---
+   &--secondary {
+    color: $color-primary;
+    background-color: transparent;
+    border-color: $color-primary;
+
+    &:hover,
+    &:focus {
+      color: $color-background;
+      background-color: $color-primary; // Fill on hover
+      border-color: $color-primary;
+       box-shadow: 0 3px 8px rgba($color-primary, 0.2);
+       transform: translateY(-1px);
+    }
+     &:active {
+        transform: translateY(0);
+        background-color: darken($color-primary, 5%);
+    }
+  }
+
+   // --- Tertiary / Ghost Button (Less prominent) ---
+   &--tertiary {
+     color: $color-text-secondary;
+     background-color: transparent;
+     border-color: transparent; // No border initially
+
+      &:hover,
+      &:focus {
+         color: $color-primary;
+         background-color: rgba($color-primary, 0.1); // Subtle background highlight
+         // Optionally add border back on hover
+         // border-color: rgba($color-primary, 0.2);
+     }
+   }
+
+    // --- Link Button (Looks like a link, behaves like a button) ---
+    &--link {
+       color: $color-link;
+       background-color: transparent;
+       border-color: transparent;
+       padding-left: 0;
+       padding-right: 0;
+
+       &:hover, &:focus {
+          color: $color-link-hover;
+          text-decoration: underline;
+          background-color: transparent; // Ensure no bg artifacts
+          box-shadow: none;
+          transform: none;
+       }
+   }
+
+
+    // --- Destructive Button (Warning / Delete actions) ---
+     &--danger {
+       color: $color-danger;
+       background-color: transparent;
+       border-color: $color-danger;
+
+       &:hover, &:focus {
+           color: $color-background; // Invert colors
+           background-color: $color-danger;
+           border-color: $color-danger;
+           box-shadow: 0 3px 8px rgba($color-danger, 0.3);
+           transform: translateY(-1px);
+       }
+        &:active {
+          transform: translateY(0);
+           background-color: darken($color-danger, 5%);
+        }
+    }
+     &--danger-solid { // Solid danger button
+        color: $color-background;
+        background-color: $color-danger;
+        border-color: $color-danger;
+         box-shadow: 0 2px 5px rgba($color-danger, 0.2);
+
+        &:hover, &:focus {
+           color: $color-background;
+           background-color: darken($color-danger, 10%);
+           border-color: darken($color-danger, 12%);
+           box-shadow: 0 4px 10px rgba($color-danger, 0.3);
+           transform: translateY(-2px);
+        }
+          &:active {
+            transform: translateY(0);
+            box-shadow: inset 0 1px 3px rgba(black, 0.2);
+        }
+     }
+
+
+   // === Button Sizes ===
+   &--large {
+     font-size: 1.15rem;
+     padding: $spacing-unit $spacing-unit-lg; // Larger padding
+     border-radius: $border-radius-lg;
+   }
+
+   &--small {
+     font-size: 0.85rem;
+     padding: $spacing-unit-xs $spacing-unit; // Smaller padding
+     border-radius: $border-radius-sm;
+   }
+
+   // === Button with Icon ===
+   .btn-icon {
+      margin-right: $spacing-unit-sm; // Space between icon and text
+      vertical-align: middle;
+      // Adjust icon size/color if necessary
+   }
+   &--icon-only { // Button with only an icon
+      padding: $spacing-unit-sm;
+      width: calc(#{$font-size-base} * #{$line-height-base} + #{$spacing-unit-sm} * 2 + #{$border-width} * 2); // Calculate width to be square-ish
+      height: calc(#{$font-size-base} * #{$line-height-base} + #{$spacing-unit-sm} * 2 + #{$border-width} * 2);
+      line-height: 1; // Center icon better
+
+      .btn-icon {
+        margin-right: 0;
+      }
+   }
+
+    // === Button Group ===
+    .btn-group {
+        position: relative;
+        display: inline-flex;
+        vertical-align: middle;
+
+        > .btn {
+           position: relative;
+           flex: 1 1 auto; // Distribute space
+
+            // Remove rounded corners for adjacent buttons
+            &:not(:first-child) {
+                margin-left: -$border-width; // Overlap borders
+                border-top-left-radius: 0;
+                border-bottom-left-radius: 0;
+            }
+             &:not(:last-child) {
+                 border-top-right-radius: 0;
+                 border-bottom-right-radius: 0;
+             }
+
+            // Ensure proper focus state within group
+            &:hover, &:focus, &:active {
+                 z-index: $z-index-base; // Bring focused button to front
+            }
+        }
+    }
+
+}
+
+// Styling for native <button> elements to match .btn (optional)
+button {
+   // Add basic styles here if you want <button> elements to look like .btn by default
+   // &:not([class^="btn"]) {
+   //   // ... copy base .btn styles ...
+   // }
+}

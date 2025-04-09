@@ -1,22 +1,36 @@
-<!-- _layouts/default.html -->
 <!DOCTYPE html>
-<html lang="{{ site.lang | default: 'en-US' }}">
-  {% include head.html %}
-  
-  <body>
-    {% include particle-network.html %}
-    {% include header.html %}
-    
-    <main class="main-content">
-      {{ content }}
+<html lang="{{ page.lang | default: site.lang | default: 'vi' }}">
+
+{% include head.html %} {# Tải các thẻ trong <head> #}
+
+{# Thêm class `theme-dark` hoặc dùng JS để chuyển đổi theme #}
+<body class="theme-dark">
+
+  <div class="site-container">
+    {% include header.html %} {# Chèn header #}
+
+    {# Thêm class cho animation load vào main hoặc từng section trong content #}
+    <main class="main-content" id="main-content" aria-label="Content">
+        {{ content }} {# Nội dung của trang/bài viết sẽ được chèn vào đây #}
     </main>
-    
-    {% include footer.html %}
-    
-    <!-- JavaScript -->
-    <script src="{{ '/assets/js/particles.js' | relative_url }}"></script>
-    <script src="{{ '/assets/js/animations.js' | relative_url }}"></script>
-    <script src="{{ '/assets/js/main.js' | relative_url }}"></script>
-    <script src="https://unpkg.com/scrollreveal"></script>
-  </body>
+
+    {% include footer.html %} {# Chèn footer #}
+  </div>
+
+  <!-- JavaScript -->
+  {# Cân nhắc dùng CDN hoặc tải về anime.min.js #}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha512-z4OUqw38qNLpn1libAN9BsoDx6nbNFio5lA6CuTp9NlK83b89hgyCVq+N5FdBJptA6hDQ5AH5WYBVbjmsezQDw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  {# Hoặc dùng file local nếu đã tải về:
+  <script src="{{ '/assets/js/anime.min.js' | relative_url }}"></script>
+  #}
+  <script src="{{ '/assets/js/main.js' | relative_url }}"></script>
+
+  {# Thêm script tùy chỉnh trong trang nếu cần #}
+  {% if page.custom_js %}
+    {% for script_file in page.custom_js %}
+      <script src="{{ script_file | relative_url }}" async></script> {# async or defer #}
+    {% endfor %}
+  {% endif %}
+
+</body>
 </html>

@@ -1,0 +1,93 @@
+// _sass/components/_code.scss
+// Basic styling for code blocks and inline code.
+// For full syntax highlighting, you'll need a JS library (Highlight.js, Prism.js)
+// and its corresponding CSS theme, potentially overriding some styles here.
+@use "../base/variables" as *;
+
+
+// === Inline Code ===
+// Applied to `<code>` tags NOT inside `<pre>`
+// Already has some basic style in _typography.scss, can refine here
+code:not(pre > code) {
+  color: $color-accent; // Example color for inline code
+  background-color: $color-surface-alt;
+  padding: $spacing-unit-xs $spacing-unit-sm;
+  border-radius: $border-radius-sm;
+  font-size: 0.9em;
+  border: $border-width solid $color-border;
+}
+
+// === Code Blocks ===
+// Applied to `<pre>` elements (which usually contain a `<code>` tag)
+pre {
+  display: block; // Ensure block display
+  padding: $spacing-unit-md; // Padding inside the block
+  margin: $spacing-unit-md 0; // Space above/below the block
+  background-color: $color-surface-alt; // Darker background for contrast
+  border: $border-width solid $color-border; // Border around the block
+  border-radius: $border-radius; // Rounded corners
+  color: $color-text-primary; // Base text color inside block
+  font-family: $font-code; // Use monospace font
+  font-size: 0.9rem; // Slightly smaller code font
+  line-height: 1.5; // Line height for readability
+  overflow-x: auto; // Add horizontal scroll for long lines
+  white-space: pre; // Preserve whitespace and line breaks
+  -webkit-overflow-scrolling: touch; // Smooth scrolling on touch devices
+
+   // Optional: Add subtle shadow or inner glow
+   // box-shadow: inset 0 1px 5px rgba(black, 0.1);
+
+
+   // --- Style the <code> tag inside <pre> ---
+  > code {
+    // Reset inline code styles that might interfere
+    display: block; // Ensure it fills the <pre> block
+    padding: 0; // Remove padding if inherited
+    margin: 0; // Remove margin if inherited
+    font-size: inherit; // Inherit font size from <pre>
+    color: inherit; // Inherit base color (syntax highlighting will override)
+    background-color: transparent; // No background needed inside pre
+    border: none; // No border needed inside pre
+    white-space: inherit; // Inherit whitespace handling
+     overflow: visible; // Don't hide overflow on the code tag itself
+  }
+
+  // --- Optional: Line Numbers ---
+   // Requires JS or specific Jekyll plugin/Liquid logic to add line numbers
+   // If line numbers are added (e.g., in a separate column/pseudo-element):
+   &.line-numbers {
+     // Example style using :before pseudo-elements - Needs Liquid counter
+     // Or styles targeting specific line number spans added by JS
+      position: relative;
+      padding-left: $spacing-unit-xl; // Make space for line numbers
+
+      .line-number { // Hypothetical class for line number span/div
+           position: absolute;
+           top: $spacing-unit-md; // Align with first line padding
+           left: 0;
+           width: $spacing-unit-lg; // Width of the number column
+           padding-right: $spacing-unit-sm; // Space between number and code
+           text-align: right;
+           color: $color-text-muted; // Dim color for line numbers
+           font-size: 0.8rem;
+           user-select: none; // Prevent selecting line numbers
+       }
+   }
+
+} // End pre
+
+// === Basic Syntax Highlighting Styles (if NOT using external theme) ===
+// These are generic placeholders. Replace with actual styles from Highlight.js/Prism themes
+// or define your own basic highlighting.
+pre code {
+    .hljs-comment, .hljs-meta { color: $color-text-muted; font-style: italic;} // Comments, metadata
+    .hljs-keyword, .hljs-tag, .hljs-section, .hljs-name, .hljs-selector-tag, .hljs-selector-id, .hljs-selector-class { color: $color-secondary;} // Keywords, tags (Magenta)
+    .hljs-attribute, .hljs-property, .hljs-variable, .hljs-template-variable, .hljs-regexp, .hljs-link { color: $color-primary;} // Attributes, variables (Cyan)
+    .hljs-string, .hljs-symbol, .hljs-bullet, .hljs-number, .hljs-literal { color: $color-success;} // Strings, numbers (Greenish)
+    .hljs-title, .hljs-class .hljs-title, .hljs-type { color: $color-accent;} // Class names, types (Amber)
+    .hljs-built_in, .hljs-builtin-name { color: lighten($color-primary, 15%); } // Built-ins
+    .hljs-deletion { background-color: rgba($color-danger, 0.2); }
+    .hljs-addition { background-color: rgba($color-success, 0.15); }
+    .hljs-emphasis { font-style: italic; }
+    .hljs-strong { font-weight: bold; }
+}

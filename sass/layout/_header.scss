@@ -1,53 +1,112 @@
-// _header.scss
-.hero {
-    min-height: 100vh;
+// _sass/layout/_header.scss
+@use "../base/variables" as *;
+
+.site-header {
+  background-color: rgba($color-surface, 0.85); // Semi-transparent background
+  backdrop-filter: blur(10px); // Frosted glass effect (check browser support)
+  border-bottom: $border-width solid $color-border;
+  position: sticky; // Make header stick to top on scroll
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: $z-index-header; // Ensure it's above other content
+  transition: background-color $transition-speed-normal ease-in-out;
+
+  // Add shadow on scroll (requires JS to add/remove a class like 'scrolled')
+   // &.scrolled {
+   //    box-shadow: 0 2px 10px rgba(black, 0.15);
+   //     background-color: rgba($color-surface, 0.95); // Less transparent on scroll
+   // }
+
+
+  .header-container {
+    // Use the grid container mixin/class or define here
+    max-width: $container-max-width;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: $container-padding-x;
+    padding-right: $container-padding-x;
+
     display: flex;
+    justify-content: space-between; // Space out title/logo and nav
     align-items: center;
-    padding: 15rem 0;
-    position: relative;
-    overflow: hidden;
-    
-    &__content {
-      max-width: 60rem;
-      position: relative;
-      z-index: 2;
+    min-height: 60px; // Standard header height (adjust as needed)
+     @media (min-width: $breakpoint-lg){
+         min-height: 70px;
+     }
+
+  }
+
+  // --- Site Title / Logo ---
+  .site-title {
+    font-size: 1.5rem;
+    font-weight: $font-weight-bold;
+    color: $color-heading; // Bright white/heading color
+    text-decoration: none;
+    letter-spacing: 0.03em;
+     // Use the .glitch class for the text effect defined in typography/animations
+     &.glitch { font-size: inherit; } // Ensure glitch inherits size
+
+
+    .site-logo { // Style if using an SVG/image logo
+        height: 30px; // Adjust size
+        width: auto;
+        display: block; // Remove extra space below logo
+        // Add filter effects if desired for SVG logo
+        // filter: drop-shadow(0 0 3px $color-primary);
     }
-    
-    &__title {
-      font-size: 5rem;
-      margin-bottom: 2rem;
-      line-height: 1.2;
-    }
-    
-    &__subtitle {
-      color: $space-accent;
-      font-size: 2rem;
-      margin-bottom: 3rem;
-      font-family: $font-mono;
-    }
-    
-    &__desc {
-      font-size: 1.8rem;
-      margin-bottom: 4rem;
-      color: $space-text-secondary;
-    }
-    
-    &__buttons {
-      display: flex;
-      gap: 2rem;
-    }
-    
-    &__decoration {
-      position: absolute;
-      right: 0;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 50%;
-      max-width: 60rem;
-      opacity: 0.7;
-      
-      @media (max-width: $breakpoint-lg) {
-        display: none;
-      }
+
+    &:hover {
+        color: $color-primary; // Change color on hover
     }
   }
+
+
+   // --- Search Area (Optional) ---
+  .search-toggle { // Style the button that reveals search
+    background: none;
+    border: none;
+    color: $color-text-secondary;
+    cursor: pointer;
+    padding: $spacing-unit-sm;
+    font-size: 1.2rem; // Icon size
+    transition: color $transition-speed-fast;
+     margin-left: $spacing-unit; // Space from nav
+
+    &:hover {
+        color: $color-primary;
+    }
+  }
+
+  .search-container { // The actual search bar container
+    // Style its position, visibility (controlled by JS)
+    position: absolute; // Example: position absolute below header
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: $color-surface;
+    padding: $spacing-unit;
+    box-shadow: 0 5px 10px rgba(black, 0.1);
+    z-index: $z-index-header - 1; // Below header but above content
+    display: none; // Initially hidden
+
+     &.active { display: block;} // Show when active
+
+    // Style the form elements inside
+    // .search-form { ... }
+    // .search-input { ... }
+  }
+
+
+  // --- Mobile specific header adjustments ---
+  @media (max-width: $breakpoint-md) {
+    .header-container {
+        min-height: 55px; // Slightly smaller height on mobile
+    }
+    .site-title {
+        font-size: 1.3rem; // Smaller title on mobile
+    }
+     // Nav trigger/label is styled within _navbar.scss
+  }
+
+}

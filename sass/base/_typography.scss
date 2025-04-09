@@ -1,90 +1,285 @@
-// _typography.scss
-h1, h2, h3, h4, h5, h6 {
-    font-weight: 600;
-    line-height: 1.2;
-    margin-bottom: 1.5rem;
-    color: $space-text;
+// _sass/base/_typography.scss
+@use "variables" as *;
+
+body {
+  font-family: $font-primary;
+  font-size: $font-size-base;
+  line-height: $line-height-base;
+  color: $color-text-primary;
+}
+
+h1, .h1,
+h2, .h2,
+h3, .h3,
+h4, .h4,
+h5, .h5,
+h6, .h6 {
+  font-family: $font-primary; // Could use a different heading font
+  color: $color-heading;
+  font-weight: $font-weight-semibold;
+  line-height: 1.3;
+  margin-top: $spacing-unit-md;
+  margin-bottom: $spacing-unit;
+  letter-spacing: -0.01em; // Subtle tightening
+}
+
+h1, .h1 {
+  font-size: 2.5rem; // ~40px
+  font-weight: $font-weight-bold;
+  letter-spacing: -0.02em;
+  // Add sci-fi text effects if desired
+  // text-shadow: 0 0 5px rgba($color-primary, 0.5);
+}
+h2, .h2 { font-size: 2rem; }     // ~32px
+h3, .h3 { font-size: 1.75rem; }  // ~28px
+h4, .h4 { font-size: 1.5rem; }   // ~24px
+h5, .h5 { font-size: 1.25rem; }  // ~20px
+h6, .h6 { font-size: 1rem; }     // ~16px
+
+p {
+  margin-bottom: $spacing-unit-md; // ~24px
+}
+
+a {
+  color: $color-link;
+  transition: color $transition-speed-fast ease-in-out,
+              text-shadow $transition-speed-fast ease-in-out; // Smooth hover
+
+  &:hover,
+  &:focus {
+    color: $color-link-hover;
+    text-decoration: none; // Keep underline off by default maybe? Or add on hover?
+    // Optional hover effect:
+    // text-shadow: 0 0 3px rgba($color-link-hover, 0.7);
   }
-  
-  h1 {
-    font-size: 4rem;
-    background: linear-gradient(90deg, $space-text, $space-accent);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    position: relative;
+}
+
+// Strong / Bold
+strong, b {
+  font-weight: $font-weight-bold;
+  color: $color-heading; // Slightly brighter than normal text
+}
+
+// Emphasis / Italic
+em, i {
+  font-style: italic;
+   color: $color-secondary; // Use secondary color for emphasis?
+}
+
+// Code elements
+code, kbd, pre, samp {
+  font-family: $font-code;
+  font-size: 0.9em; // Slightly smaller than body text
+  color: $color-accent; // Accent color for code
+  background-color: rgba($color-surface-alt, 0.5);
+  padding: $spacing-unit-xs $spacing-unit-sm;
+  border-radius: $border-radius-sm;
+  border: $border-width solid $color-border;
+}
+
+pre {
+  display: block;
+  padding: $spacing-unit;
+  margin-bottom: $spacing-unit-md;
+  overflow-x: auto; // Handle long lines of code
+  background-color: $color-surface-alt;
+  border: $border-width solid $color-border;
+  border-radius: $border-radius;
+  white-space: pre; // Preserve whitespace
+
+  code { // Reset style for code inside pre
+    padding: 0;
+    margin: 0;
+    font-size: inherit;
+    color: inherit; // Will be styled by syntax highlighter
+    background-color: transparent;
+    border: none;
+  }
+}
+
+// Blockquotes
+blockquote {
+  border-left: 4px solid $color-primary;
+  padding-left: $spacing-unit-md;
+  margin: $spacing-unit-md 0;
+  color: $color-text-secondary;
+  font-style: italic;
+
+  p {
+    margin-bottom: $spacing-unit-sm;
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  cite {
+    display: block;
+    margin-top: $spacing-unit-sm;
+    font-style: normal;
+    font-weight: $font-weight-medium;
+    color: $color-text-primary;
+    &::before {
+      content: "— "; // Em dash
+    }
+  }
+}
+
+// Lists (ordered and unordered)
+ul, ol {
+  margin-left: $spacing-unit-md; // Indentation
+  margin-bottom: $spacing-unit-md;
+
+  li {
+    margin-bottom: $spacing-unit-sm;
+     padding-left: $spacing-unit-sm; // Space before marker
+  }
+}
+
+ul {
+  list-style: none; // Remove default marker
+  li::before {
+    content: '»'; // Sci-fi style bullet
+    color: $color-primary;
+    font-weight: bold;
     display: inline-block;
-    
+    width: 1em; // Fixed width alignment
+    margin-left: -1em; // Pull back into margin
+    margin-right: $spacing-unit-sm; // Space after marker
+    // Or use ::marker pseudo-element in modern browsers
+  }
+}
+
+ol {
+   list-style: none; // Remove default marker
+   counter-reset: ordered-list-counter;
+   li {
+    counter-increment: ordered-list-counter;
+    &::before {
+      content: counter(ordered-list-counter) "."; // Custom counter
+      color: $color-primary;
+      font-weight: $font-weight-semibold;
+      display: inline-block;
+      width: 1.5em; // Ensure enough space for double digits
+      margin-left: -1.5em;
+      margin-right: $spacing-unit-sm;
+      text-align: right; // Align numbers nicely
+    }
+  }
+}
+
+// Definition Lists
+dl {
+  margin-bottom: $spacing-unit-md;
+}
+dt { // Definition Term
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  margin-top: $spacing-unit;
+}
+dd { // Definition Description
+  margin-left: $spacing-unit-md;
+  margin-bottom: $spacing-unit-sm;
+  color: $color-text-secondary;
+}
+
+// Horizontal Rule
+hr {
+  border: 0;
+  height: 1px;
+  background-image: linear-gradient(to right, rgba($color-border, 0), rgba($color-border, 0.75), rgba($color-border, 0));
+  margin: $spacing-unit-xl 0;
+}
+
+// Subscript and Superscript
+sub, sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+sub { bottom: -0.25em; }
+sup { top: -0.5em; }
+
+// Small text
+small {
+  font-size: 0.85em;
+  color: $color-text-muted;
+}
+
+// Highlighted text / Mark
+mark {
+  background-color: rgba($color-accent, 0.3);
+  color: $color-text-primary;
+  padding: $spacing-unit-xs;
+  border-radius: $border-radius-sm;
+}
+
+// Helper text utility classes (Optional)
+.text-primary { color: $color-text-primary !important; }
+.text-secondary { color: $color-text-secondary !important; }
+.text-muted { color: $color-text-muted !important; }
+.text-link { color: $color-link !important; }
+.text-success { color: $color-success !important; }
+.text-warning { color: $color-warning !important; }
+.text-danger { color: $color-danger !important; }
+.text-accent { color: $color-accent !important; }
+.text-heading { color: $color-heading !important; }
+
+.text-center { text-align: center !important; }
+.text-left { text-align: left !important; }
+.text-right { text-align: right !important; }
+
+.font-weight-normal   { font-weight: $font-weight-normal !important; }
+.font-weight-medium   { font-weight: $font-weight-medium !important; }
+.font-weight-semibold { font-weight: $font-weight-semibold !important; }
+.font-weight-bold     { font-weight: $font-weight-bold !important; }
+
+.font-code { font-family: $font-code !important; }
+
+.text-uppercase { text-transform: uppercase !important; }
+.text-lowercase { text-transform: lowercase !important; }
+.text-capitalize { text-transform: capitalize !important; }
+
+.lead { // For lead paragraphs
+    font-size: 1.25rem;
+    font-weight: $font-weight-normal;
+    color: $color-text-secondary;
+}
+
+// Glitch effect for headings or titles
+// Needs JS or more complex animation for dynamic effect
+.glitch {
+    position: relative;
+    color: $color-heading;
+    // text-shadow:
+    //   0.05em 0 0 rgba($color-secondary, 0.75), // Magenta offset
+    //   -0.05em 0 0 rgba($color-primary, 0.75), // Cyan offset
+    //   0 0 0.05em rgba($color-heading, 0.5); // White glow
+
+     // Pseudo-elements for stronger effect (requires data-text attribute in HTML)
+     &::before, &::after {
+        content: attr(data-text);
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: $color-background; // Match background
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0); // Use clip-path for modern browsers
+        // animation: glitch-anim-[top/bottom] 2s infinite linear alternate-reverse; //Needs keyframes
+    }
+    &::before {
+        left: 2px;
+        text-shadow: -1px 0 $color-secondary; // Magenta
+        // clip: rect(44px, 450px, 56px, 0); // Example clip
+    }
     &::after {
-      content: '';
-      position: absolute;
-      bottom: -10px;
-      left: 0;
-      width: 100%;
-      height: 3px;
-      background: linear-gradient(90deg, $space-accent, transparent);
-      border-radius: 3px;
+        left: -2px;
+        text-shadow: -1px 0 $color-primary; // Cyan
+        // clip: rect(85px, 450px, 90px, 0); // Example clip
     }
-  }
-  
-  h2 {
-    font-size: 3rem;
-    margin-top: 4rem;
-    position: relative;
-    padding-left: 2rem;
-    
-    &::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 0.5rem;
-      height: 2rem;
-      width: 0.5rem;
-      background: $space-accent;
-      border-radius: 0.5rem;
-    }
-  }
-  
-  a {
-    color: $space-accent;
-    text-decoration: none;
-    transition: $transition-base;
-    
-    &:hover {
-      color: lighten($space-accent, 10%);
-    }
-  }
-  
-  code {
-    font-family: $font-mono;
-    background: rgba(100, 255, 218, 0.1);
-    padding: 0.2rem 0.4rem;
-    border-radius: 0.3rem;
-    font-size: 90%;
-  }
-  
-  pre {
-    background: $space-secondary;
-    padding: 2rem;
-    border-radius: 0.5rem;
-    overflow-x: auto;
-    margin: 2rem 0;
-    box-shadow: $shadow-md;
-    position: relative;
-    
-    &::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 3px;
-      background: linear-gradient(90deg, $space-accent, #5e78ff, #ff5e9a);
-      border-radius: 0.5rem 0.5rem 0 0;
-    }
-    
-    code {
-      background: transparent;
-      padding: 0;
-    }
-  }
+
+     // Keyframes need to be defined in _animations.scss
+}
+

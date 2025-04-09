@@ -1,29 +1,66 @@
-title: Knowledge Nebula
-description: Nơi chia sẻ tài liệu học tập chất lượng từ cộng đồng
-url: "https://niyakipham.github.io"
-baseurl: "/cba2" # Nếu dùng custom domain thì để ""
-repository: niyakipham/cba2
+# Site settings
+title: Codex Nebula - Share Tài Liệu Học Tập
+email: your-email@example.com
+description: >- # this means to ignore newlines until "baseurl:"
+  Một trang chia sẻ tài liệu học tập hiện đại, được xây dựng với Jekyll
+  và mang phong cách khoa học viễn tưởng, tập trung vào trải nghiệm người dùng.
+baseurl: "" # the subpath of your site, e.g. /blog - Để trống nếu host ở root
+url: "" # the base hostname & protocol for your site, e.g. https://yourusername.github.io
+github_username: yourusername # Thay bằng username Github của bạn
 
-# Theme settings
-theme_color: "#0a192f"
-accent_color: "#64ffda"
-logo: "/assets/images/logo.svg"
+# Author info (Optional)
+author:
+  name: Tên Của Bạn
+  email: your-email@example.com
 
 # Build settings
-markdown: kramdown
+theme: null # We are using our own theme files
+sass:
+  sass_dir: _sass
+  style: compressed # Use :expanded for easier debugging during development
+
 plugins:
   - jekyll-feed
   - jekyll-seo-tag
+  - jekyll-sitemap # Good for SEO
 
-# Collections
+# Collections (Ví dụ: nếu muốn quản lý tài liệu tách biệt khỏi posts)
 collections:
-  docs:
+  documents:
     output: true
-    permalink: /docs/:path/
+    permalink: /tai-lieu/:path/
 
+# Default front matter
 defaults:
   - scope:
       path: ""
-      type: docs
+      type: "posts" # Áp dụng layout post cho tất cả các bài trong _posts
     values:
-      layout: doc
+      layout: "post"
+      comments: true # Ví dụ: bật comments mặc định cho posts
+  - scope:
+      path: ""
+      type: "documents" # Áp dụng layout post cho các item trong collection 'documents'
+    values:
+      layout: "post"
+      comments: false
+  - scope:
+      path: "" # Áp dụng cho tất cả các file markdown không thuộc posts/collections
+    values:
+      layout: "page"
+  - scope:
+      path: "index.md" # Riêng trang chủ dùng layout default
+    values:
+      layout: "default"
+
+# Exclude from processing.
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor/bundle/
+  - vendor/cache/
+  - vendor/gems/
+  - vendor/ruby/
+  - README.md
+  - LICENSE

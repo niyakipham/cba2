@@ -1,0 +1,158 @@
+// _sass/pages/_home.scss
+// Styles specific to the homepage (index.md) layout elements
+@use "../base/variables" as *;
+@use "../components/buttons" as *; // Use button styles if needed
+
+// === Hero Section ===
+.hero {
+  padding: $spacing-unit-xxl 0; // Lots of vertical padding
+  text-align: center;
+  background: linear-gradient(135deg, rgba($color-surface, 0.1) 0%, rgba($color-background, 1) 70%),
+              url('/assets/images/nebula-background.jpg'); // Example background image - replace with your own
+  background-size: cover;
+  background-position: center center;
+  position: relative; // For overlay or pseudo-elements
+  overflow: hidden;
+  border-bottom: 2px solid $color-primary; // Accent border
+
+
+  // Optional overlay
+   // &::before {
+   //     content: '';
+   //     position: absolute;
+   //     top: 0; left: 0; right: 0; bottom: 0;
+   //     background: rgba($color-background, 0.6); // Darken the background image
+   //     z-index: $z-index-base;
+   // }
+
+   // Ensure content is above overlay
+   &__content {
+       position: relative;
+       z-index: $z-index-content;
+        @extend .container; // Use container mixin/class
+   }
+
+
+   h1 {
+       font-size: 3rem; // Large heading
+       color: $color-heading;
+       font-weight: $font-weight-bold;
+       margin-bottom: $spacing-unit-sm;
+        line-height: 1.2;
+       text-shadow: 0 2px 10px rgba(0,0,0, 0.5); // Add shadow for readability on image
+
+        .highlight { // Style the span with class="highlight"
+            color: $color-primary;
+            // Optional: add slight animation or different effect
+            display: inline-block; // Needed for transforms if any
+        }
+
+        @media (max-width: $breakpoint-md) {
+           font-size: 2.5rem;
+       }
+        @media (max-width: $breakpoint-sm) {
+           font-size: 2rem;
+       }
+   }
+
+
+    .subtitle {
+       font-size: 1.2rem;
+       color: $color-text-secondary; // Lighter secondary color
+       margin-bottom: $spacing-unit-lg;
+       max-width: 600px; // Limit width of subtitle
+       margin-left: auto;
+       margin-right: auto;
+       line-height: 1.7;
+        @media (max-width: $breakpoint-sm) {
+           font-size: 1.1rem;
+       }
+    }
+
+
+   // Button styling is inherited from _buttons.scss, just ensure class is used
+   .btn--large {
+       // Add any specific overrides if needed
+   }
+}
+
+
+// === Document List Section ===
+.document-list {
+   @extend .container; // Use container mixin/class
+   padding-top: $spacing-unit-xl;
+   padding-bottom: $spacing-unit-xl;
+
+
+    h2 { // Style section headings
+       text-align: center;
+       margin-bottom: $spacing-unit-lg;
+       color: $color-heading;
+        font-size: 2rem;
+       display: flex; // Align icon and text nicely
+       align-items: center;
+        justify-content: center;
+        gap: $spacing-unit-sm;
+
+        i { // Style icon in heading
+          color: $color-primary;
+          font-size: 0.8em; // Slightly smaller than text
+           opacity: 0.8;
+       }
+    }
+
+    // Grid container styling comes from _grid.scss
+     .grid-container {
+         // Overrides specific to document list grid if necessary
+    }
+
+
+   // --- Placeholder Message ---
+   .placeholder-message {
+      text-align: center;
+      color: $color-text-muted;
+      padding: $spacing-unit-xl 0;
+      font-style: italic;
+      grid-column: 1 / -1; // Ensure it spans all columns if inside a grid
+   }
+
+    // --- Section Footer / View All Button ---
+    .section-footer {
+        text-align: center;
+        margin-top: $spacing-unit-lg;
+    }
+
+} // End .document-list
+
+
+// === Categories / Tags Section ===
+.categories {
+   @extend .container;
+    padding-top: $spacing-unit-lg;
+    padding-bottom: $spacing-unit-xl;
+     background-color: $color-surface; // Slightly different background for variety
+    border-top: $border-width dashed $color-border;
+     border-bottom: $border-width dashed $color-border;
+
+      h2 { // Style section heading similar to document list
+         text-align: center;
+         margin-bottom: $spacing-unit-lg;
+         color: $color-heading;
+          font-size: 2rem;
+          display: flex; align-items: center; justify-content: center; gap: $spacing-unit-sm;
+         i { color: $color-secondary; font-size: 0.8em; opacity: 0.8; } // Use secondary color?
+    }
+
+
+   // --- Tag List container ---
+    .tag-list {
+       display: flex;
+       flex-wrap: wrap; // Allow tags to wrap
+       justify-content: center; // Center tags horizontally
+       gap: $spacing-unit; // Space between tags
+       max-width: 800px; // Limit width of tag area
+       margin-left: auto;
+       margin-right: auto;
+    }
+     // Tag styling itself comes from components/_tags.scss
+} // End .categories

@@ -1,20 +1,38 @@
-<!-- _includes/head.html -->
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    
-    <title>{{ site.title }} | {{ page.title }}</title>
-    
-    <!-- Favicon -->
-    <link rel="icon" href="{{ '/assets/images/favicon.ico' | relative_url }}">
-    
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- CSS -->
-    <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}">
-    
-    <!-- Meta tags -->
-    {% seo %}
-  </head>
-  
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  {% seo %} {# Plugin Jekyll SEO Tag handles title, description, canonical, etc. #}
+
+  {# Link to your compiled CSS file #}
+  <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}">
+
+  {# Favicon Setup - Put your favicon files in /assets/images/favicon/ #}
+  <link rel="apple-touch-icon" sizes="180x180" href="{{ '/assets/images/favicon/apple-touch-icon.png' | relative_url }}">
+  <link rel="icon" type="image/png" sizes="32x32" href="{{ '/assets/images/favicon/favicon-32x32.png' | relative_url }}">
+  <link rel="icon" type="image/png" sizes="16x16" href="{{ '/assets/images/favicon/favicon-16x16.png' | relative_url }}">
+  <link rel="manifest" href="{{ '/assets/images/favicon/site.webmanifest' | relative_url }}">
+  <link rel="mask-icon" href="{{ '/assets/images/favicon/safari-pinned-tab.svg' | relative_url }}" color="#00ffff"> {# Sci-fi color #}
+  <meta name="msapplication-TileColor" content="#0a0f1a"> {# Dark background color #}
+  <meta name="theme-color" content="#0a0f1a">
+
+  {# Google Fonts - Inter (sans-serif) & Fira Code (monospace) #}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+
+  {# Font Awesome CDN (Example) - for icons #}
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  {% feed_meta %} {# Plugin Jekyll Feed #}
+
+  {# Add custom CSS per page if needed #}
+  {% if page.custom_css %}
+    {% for stylesheet in page.custom_css %}
+      <link rel="stylesheet" href="{{ stylesheet | relative_url }}">
+    {% endfor %}
+  {% endif %}
+
+  {# Inline critical CSS or preloads if needed for performance optimization #}
+</head>

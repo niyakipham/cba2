@@ -1,0 +1,40 @@
+# Jekyll build directory
+_site/
+
+# Jekyll cache directory
+.jekyll-cache/
+.jekyll-metadata
+
+# Sass cache directory
+.sass-cache/
+
+# Node.js dependencies
+node_modules/
+
+# Bundler directories
+vendor/bundle/
+.bundle/
+
+# Gemfile lock file
+Gemfile.lock
+
+# macOS system files
+.DS_Store
+Thumbs.db
+
+# Log files
+*.log
+
+# Environment variables
+.env
+
+# IDE/Editor specific files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Temporary files
+*~
+*.swp
+*.swo

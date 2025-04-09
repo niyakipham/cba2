@@ -1,46 +1,58 @@
-<!-- _includes/header.html -->
-<header class="navbar">
-    <a href="{{ '/' | relative_url }}" class="navbar__logo">
-      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-      {{ site.title }}
+<header class="site-header animate-on-load" role="banner">
+  <div class="container header-container">
+    {# Site Title / Logo #}
+    <a class="site-title" rel="author" href="{{ "/" | relative_url }}">
+      {# Optional: Replace text with an SVG logo #}
+      {# <img src="{{ '/assets/images/logo.svg' | relative_url }}" alt="{{ site.title | escape }}" class="site-logo"> #}
+       <span class="glitch" data-text="{{ site.title | escape }}">{{ site.title | escape }}</span>
     </a>
-    
-    <nav class="navbar__links">
-      {% for item in site.data.navigation %}
-        <a href="{{ item.link | relative_url }}" class="navbar__link {% if page.url == item.link %}active{% endif %}">
-          {{ item.name }}
-        </a>
-      {% endfor %}
+
+    {# Navigation #}
+    <nav class="site-nav" aria-label="Main Navigation">
+      {# Mobile navigation toggle #}
+      <input type="checkbox" id="nav-trigger" class="nav-trigger" aria-label="Toggle Navigation" />
+      <label for="nav-trigger" class="nav-trigger-label">
+        <span class="menu-icon">
+          {# Simple hamburger icon #}
+          <svg viewBox="0 0 18 15" width="18px" height="15px">
+             <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+          </svg>
+        </span>
+         <span>Menu</span> {# Hidden text for accessibility #}
+      </label>
+
+      {# Navigation Links #}
+      <div class="trigger" id="main-nav-links">
+         {# Use a loop for page links for maintainability #}
+         {% assign default_paths = site.pages | map: "path" %}
+         {% assign page_paths = site.header_pages | default: default_paths %} {# Define site.header_pages in _config.yml to control order #}
+
+         <a class="page-link {% if page.url == '/' %}active{% endif %}" href="{{ '/' | relative_url }}">Trang Chủ</a>
+
+         {# Example Links - Create these pages or change paths #}
+         {% assign about_page = site.pages | where: "path", "about.md" | first %}
+         {% if about_page %}
+         <a class="page-link {% if page.url == about_page.url %}active{% endif %}" href="{{ about_page.url | relative_url }}">{{ about_page.title | default: "Giới Thiệu" }}</a>
+         {% endif %}
+
+          {% assign docs_page_exists = site.pages | where: "url", "/documents/" | first %}
+          {% assign archive_page_exists = site.pages | where: "url", "/archive/" | first %}
+         {% if docs_page_exists or archive_page_exists %}
+             <a class="page-link {% if page.url == '/documents/' or page.url == '/archive/' %}active{% endif %}" href="{{ '/archive/' | relative_url }}">Tài Liệu</a> {# Link to an archive page #}
+         {% endif %}
+
+         {% assign categories_page_exists = site.pages | where: "url", "/categories/" | first %}
+         {% if categories_page_exists %}
+            <a class="page-link {% if page.url == '/categories/' %}active{% endif %}" href="{{ '/categories/' | relative_url }}">Chủ Đề</a>
+         {% endif %}
+
+         {# Add other static links here #}
+         {# Example Search - Requires implementation
+         <button id="search-toggle" class="search-toggle"><i class="fas fa-search"></i></button>
+         #}
+      </div>
     </nav>
-    
-    <button class="navbar__mobile-toggle">
-      <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
-        <line x1="3" y1="12" x2="21" y2="12"></line>
-        <line x1="3" y1="6" x2="21" y2="6"></line>
-        <line x1="3" y1="18" x2="21" y2="18"></line>
-      </svg>
-    </button>
-  </header>
-  
-  <!-- Mobile navigation -->
-  <nav class="mobile-nav">
-    <button class="mobile-nav__close">
-      <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
-        <line x1="18" y1="6" x2="6" y2="18"></line>
-        <line x1="6" y1="6" x2="18" y2="18"></line>
-      </svg>
-    </button>
-    
-    <div class="mobile-nav__links">
-      {% for item in site.data.navigation %}
-        <a href="{{ item.link | relative_url }}" class="mobile-nav__link {% if page.url == item.link %}active{% endif %}">
-          {{ item.name }}
-        </a>
-      {% endfor %}
-    </div>
-  </nav>
-  
+     {# Optional: Search Bar container #}
+    {# <div id="search-container" class="search-container"> ... Search form ... </div> #}
+  </div>
+</header>

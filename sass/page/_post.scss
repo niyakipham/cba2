@@ -1,0 +1,272 @@
+// _sass/pages/_post.scss
+// Styles specific to the post/document layout (layout: post)
+@use "../base/variables" as *;
+@use "../components/tags" as *; // Ensure tag styles are available
+@use "../components/buttons" as *; // Ensure button styles are available
+@use "../components/code" as *; // Ensure code block styles are available
+
+// === Post Container ===
+.post-container {
+   @extend .container; // Use container sizing
+   max-width: 800px; // Limit width for readability (adjust as needed)
+   margin-top: $spacing-unit-lg;
+    margin-bottom: $spacing-unit-xl;
+}
+
+// === Post Article Element ===
+.post {
+    background-color: $color-surface; // Background for the article area
+    padding: $spacing-unit-lg;
+    border-radius: $border-radius-lg; // Larger radius for main content area
+    border: $border-width solid $color-border;
+    box-shadow: $box-shadow-lg; // More prominent shadow
+
+    @media (max-width: $breakpoint-sm) {
+        padding: $spacing-unit-md;
+         border-radius: $border-radius; // Normal radius on smaller screens
+    }
+}
+
+// === Post Header ===
+.post-header {
+  margin-bottom: $spacing-unit-xl;
+  padding-bottom: $spacing-unit-lg; // Space before content
+  border-bottom: $border-width solid $color-border;
+
+  .post-title {
+     font-size: 2.8rem; // Large title for posts
+     line-height: 1.2;
+     color: $color-heading;
+     margin-top: 0; // Remove default heading margin
+     margin-bottom: $spacing-unit-sm; // Space below title
+      @media (max-width: $breakpoint-md) { font-size: 2.2rem; }
+      @media (max-width: $breakpoint-sm) { font-size: 1.8rem; }
+  }
+
+  .post-meta {
+     font-size: 0.9rem;
+     color: $color-text-secondary;
+     margin-bottom: $spacing-unit-md;
+      display: flex; // Arrange meta items inline
+      flex-wrap: wrap; // Allow wrapping on small screens
+      gap: $spacing-unit-xs $spacing-unit-md; // Row and column gap
+       align-items: center;
+
+
+      i { // Style icons in meta
+         margin-right: $spacing-unit-xs;
+         color: $color-primary; // Use primary color for icons
+         opacity: 0.7;
+         font-size: 0.9em; // Slightly smaller icons
+     }
+
+      a.post-category-link {
+          color: $color-secondary; // Use secondary color for category links
+          font-weight: $font-weight-medium;
+           transition: color $transition-speed-fast;
+          &:hover { color: lighten($color-secondary, 10%); }
+      }
+
+       // Separator between meta items (optional, can use gap instead)
+      // .post-meta-separator {
+      //     margin-left: $spacing-unit-sm;
+      //     margin-right: $spacing-unit-sm;
+      //     opacity: 0.5;
+      // }
+
+        // Specific styling for author, date etc. if needed
+        .p-author { font-weight: $font-weight-medium; color: $color-text-primary; }
+
+   }
+
+   .post-tags {
+     margin-top: $spacing-unit; // Space above tags if meta is above
+     display: flex;
+     flex-wrap: wrap;
+     align-items: center;
+     gap: $spacing-unit-sm;
+
+      i { // Style tag icon
+          color: $color-text-muted;
+           margin-right: $spacing-unit-sm;
+           font-size: 0.9em;
+      }
+
+     .tag--small { // Ensure small tags are used here
+          // Inherits styles from _tags.scss
+      }
+  }
+
+} // End .post-header
+
+
+// === Post Content Area ===
+.post-content {
+   // Standard typography is handled by _typography.scss
+
+   // Specific overrides for content within a post:
+   h2 { font-size: 1.8rem; margin-top: $spacing-unit-xl; border-bottom: 1px dashed $color-border; padding-bottom: $spacing-unit-sm; }
+   h3 { font-size: 1.5rem; margin-top: $spacing-unit-lg; }
+   h4 { font-size: 1.2rem; color: $color-text-secondary; text-transform: uppercase; letter-spacing: 0.05em; }
+
+    // Ensure good spacing between block elements like paragraphs, lists, code blocks
+    p, ul, ol, blockquote, pre, figure {
+        margin-bottom: $spacing-unit-md;
+         &:last-child { margin-bottom: 0;} // Remove margin from last element in content
+    }
+
+    // Style images within post content
+   figure {
+        margin: $spacing-unit-lg 0; // Add more space around figures
+         figcaption {
+             text-align: center;
+             margin-top: $spacing-unit-sm;
+             font-size: 0.85rem;
+             color: $color-text-muted;
+             font-style: italic;
+         }
+         img {
+             display: block;
+             margin-left: auto;
+             margin-right: auto; // Center image within figure
+             max-width: 100%;
+             height: auto;
+             border-radius: $border-radius; // Add rounded corners to images
+             box-shadow: $box-shadow; // Add subtle shadow
+         }
+    }
+    // Also style standalone images if not in figures
+     p > img { // Target images directly inside paragraphs (common in Markdown)
+          @extend figure > img; // Apply same style as figure images
+          margin-top: $spacing-unit; // Add some space if image is after text
+         margin-bottom: $spacing-unit;
+     }
+
+
+    // Links within content
+   a {
+       color: $color-primary; // Ensure links stand out
+        text-decoration: underline; // Add underline for clarity in body copy
+       text-decoration-thickness: 1px;
+        text-underline-offset: 4px;
+       text-decoration-color: rgba($color-primary, 0.5); // Subtler underline color
+        transition: color $transition-speed-fast, text-decoration-color $transition-speed-fast;
+
+        &:hover {
+           color: lighten($color-primary, 10%);
+           text-decoration-color: $color-primary; // Brighter underline on hover
+       }
+   }
+
+   // Code block styling comes from _code.scss
+   // Table styling (add if needed)
+   table {
+     width: 100%;
+     margin-bottom: $spacing-unit-md;
+     border-collapse: collapse;
+     border: $border-width solid $color-border;
+
+      th, td {
+         padding: $spacing-unit-sm $spacing-unit;
+         border: $border-width solid $color-border;
+         text-align: left;
+         vertical-align: top;
+     }
+      th { // Header cells
+         background-color: rgba($color-surface-alt, 0.7);
+         color: $color-heading;
+         font-weight: $font-weight-semibold;
+     }
+      tbody tr:nth-child(odd) { // Zebra striping
+         background-color: rgba($color-surface, 0.5); // Slightly different shade for odd rows
+     }
+      tbody tr:hover { // Row hover effect
+         background-color: rgba($color-primary, 0.05);
+      }
+  }
+
+} // End .post-content
+
+
+// === Post Download Button Area ===
+.post-download {
+  margin-top: $spacing-unit-xl;
+  padding-top: $spacing-unit-lg;
+  border-top: $border-width dashed $color-border;
+  text-align: center;
+
+  .btn { // Style the download button
+    // Use styles from _buttons.scss
+    @extend .btn--primary; // Make it look like the primary button
+     // Add specific overrides if needed
+     min-width: 200px; // Make button wider
+     i { margin-right: $spacing-unit-sm; } // Space icon and text
+  }
+}
+
+
+// === Related Posts Section ===
+aside.related-posts {
+  margin-top: $spacing-unit-xl;
+  padding: $spacing-unit-lg;
+  border-top: $border-width solid $color-border;
+   background-color: $color-surface-alt; // Slightly different background
+   border-radius: $border-radius;
+
+  h3 {
+    font-size: 1.3rem;
+    color: $color-heading;
+    margin-top: 0;
+    margin-bottom: $spacing-unit-md;
+     display: flex; align-items: center; gap: $spacing-unit-sm;
+     i { color: $color-accent; font-size: 0.9em; } // Accent icon
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    li {
+      margin-bottom: $spacing-unit;
+       padding: 0;
+       &::before { content: none; }
+
+       a {
+         color: $color-text-primary;
+         font-weight: $font-weight-medium;
+         display: block; // Make link take full width
+         padding: $spacing-unit-sm $spacing-unit; // Add padding for better click target
+         border-radius: $border-radius-sm;
+          transition: background-color $transition-speed-fast, color $transition-speed-fast;
+           &:hover {
+               background-color: rgba($color-primary, 0.1);
+               color: $color-primary;
+           }
+      }
+        &:last-child { margin-bottom: 0; }
+    }
+  }
+}
+
+
+// === Comments Section (Basic placeholder) ===
+.post-comments {
+  margin-top: $spacing-unit-xl;
+  padding-top: $spacing-unit-xl;
+  border-top: $border-width solid $color-border;
+
+  h2 { // Comments section title
+     text-align: center;
+     color: $color-heading;
+     margin-bottom: $spacing-unit-lg;
+  }
+
+   // Add styling based on the commenting system used (Disqus, Giscus, etc.)
+   // Example: Styling for a hypothetical comment form
+   #comment-form {
+     // Styles for labels, inputs, textarea, submit button
+   }
+    .comment-list {
+       // Styles for individual comments, author names, dates, replies
+    }
+}

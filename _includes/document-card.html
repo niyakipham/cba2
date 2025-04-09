@@ -1,0 +1,52 @@
+{% assign doc = include.document %}
+<div class="document-card animate-on-scroll">
+  {# Optional: Featured Image #}
+  {% if doc.image %}
+  <div class="document-card__image">
+    <a href="{{ doc.url | relative_url }}" aria-hidden="true" tabindex="-1">
+        <img src="{{ doc.image | relative_url }}" alt="Hình ảnh minh họa cho {{ doc.title | escape }}" loading="lazy">
+    </a>
+  </div>
+  {% endif %}
+
+  <div class="document-card__content">
+      <div class="document-card__meta-top">
+        {% if doc.categories.size > 0 %}
+        <span class="document-card__category">
+           {% for category in doc.categories limit: 1 %}
+                <a href="/category/{{ category | slugify }}/">{{ category }}</a>
+           {% endfor %}
+        </span>
+         {% endif %}
+          <span class="document-card__date">
+            <i class="far fa-calendar-alt"></i> {# Sử dụng far cho regular style #}
+            {{ doc.date | date: "%d.%m.%Y" }}
+         </span>
+      </div>
+
+      <h3 class="document-card__title">
+        <a href="{{ doc.url | relative_url }}">{{ doc.title | escape }}</a>
+      </h3>
+
+      {% if doc.excerpt %}
+      <p class="document-card__description">
+        {{ doc.excerpt | strip_html | truncatewords: 25 }} {# Ngắn gọn hơn cho card #}
+      </p>
+      {% endif %}
+
+       <div class="document-card__footer">
+         {% if doc.tags.size > 0 %}
+          <div class="document-card__tags">
+             <i class="fas fa-tag"></i>
+            {% for tag in doc.tags limit: 3 %} {# Giới hạn số tags #}
+             <a href="/tags/{{ tag | slugify }}/" class="tag tag--small">{{ tag }}</a>
+            {% endfor %}
+             {% if doc.tags.size > 3 %} <span class="tag-more">&hellip;</span> {% endif %}
+          </div>
+         {% endif %}
+           <a href="{{ doc.url | relative_url }}" class="document-card__readmore">
+              Xem thêm <i class="fas fa-arrow-right"></i>
+            </a>
+       </div>
+    </div>
+</div>

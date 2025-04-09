@@ -1,0 +1,73 @@
+---
+layout: default
+---
+<div class="container post-container">
+<article class="post h-entry animate-on-load" itemscope itemtype="http://schema.org/Article">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">{{ page.title | escape }}</h1>
+    <p class="post-meta">
+      <i class="fas fa-calendar-alt"></i> <time class="dt-published" datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">
+        {%- assign date_format = site.minima.date_format | default: "%d/%m/%Y" -%}
+        {{ page.date | date: date_format }}
+      </time>
+      {%- if page.author -%}
+        <span class="post-meta-separator">|</span> <i class="fas fa-user"></i> <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span class="p-author h-card" itemprop="name">{{ page.author }}</span></span>
+      {%- endif -%}
+       {%- if page.categories.size > 0 -%}
+       <span class="post-meta-separator">|</span> <i class="fas fa-folder-open"></i>
+       {% for category in page.categories %}
+         <a href="/category/{{ category | slugify }}/" class="post-category-link">{{ category }}</a>{% unless forloop.last %}, {% endunless %}
+       {% endfor %}
+      {%- endif -%}
+    </p>
+     {% if page.tags.size > 0 %}
+        <div class="post-tags">
+          <i class="fas fa-tags"></i>
+          {% for tag in page.tags %}
+           <a href="/tags/{{ tag | slugify }}/" class="tag tag--small">{{ tag }}</a>
+          {% endfor %}
+        </div>
+        {% endif %}
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    {{ content }}
+  </div>
+
+  {# Optional: Add Download Button if URL exists in front matter #}
+  {% if page.download_url %}
+  <div class="post-download">
+    <a href="{{ page.download_url }}" class="btn btn--primary" target="_blank" rel="noopener noreferrer"><i class="fas fa-download"></i> Tải Tài Liệu</a>
+  </div>
+  {% endif %}
+
+  {# Optional: Related Posts Section #}
+  {% assign related_posts = "" | split: "" %}
+  {% for tag in page.tags %}
+      {% assign posts_with_tag = site.tags[tag] | where_exp: "item", "item.url != page.url" %}
+      {% assign related_posts = related_posts | concat: posts_with_tag %}
+  {% endfor %}
+  {% assign related_posts = related_posts | uniq | sort: 'date' | reverse | limit: 3 %}
+
+  {% if related_posts.size > 0 %}
+  <aside class="related-posts">
+      <h3><i class="fas fa-lightbulb"></i> Có thể bạn quan tâm:</h3>
+      <ul>
+          {% for related in related_posts %}
+              <li><a href="{{ related.url | relative_url }}">{{ related.title }}</a></li>
+          {% endfor %}
+      </ul>
+  </aside>
+  {% endif %}
+
+
+  {# Optional: Add Comments Section (e.g., Disqus, Giscus) #}
+  {% if page.comments and site.disqus.shortname %} {# Example with Disqus #}
+     {% include disqus_comments.html %} {# Create this include file #}
+  {% endif %}
+
+  {# Hidden metadata for machines #}
+  <a class="u-url" href="{{ page.url | relative_url }}" hidden></a>
+</article>
+</div>

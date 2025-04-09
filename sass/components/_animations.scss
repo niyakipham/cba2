@@ -1,0 +1,151 @@
+// _sass/components/_animations.scss
+@use "../base/variables" as *;
+
+// Define keyframes used by components or JS
+
+// Example: Subtle Pulse Animation for highlights or alerts
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+     box-shadow: 0 0 0 0 rgba($color-primary, 0.5);
+  }
+  70% {
+     transform: scale(1.02); // Slightly larger
+     opacity: 0.9;
+     box-shadow: 0 0 0 10px rgba($color-primary, 0); // Fading glow
+  }
+  100% {
+     transform: scale(1);
+     opacity: 1;
+     box-shadow: 0 0 0 0 rgba($color-primary, 0);
+  }
+}
+
+.animate-pulse {
+  animation: pulse 2s infinite cubic-bezier(0.4, 0, 0.6, 1);
+}
+
+
+// Example: Glitch Text Animation Keyframes (used in typography)
+@keyframes glitch-anim-top {
+  0%, 100% { clip-path: polygon(0 0, 100% 0, 100% 30%, 0 30%); transform: translate(-0.05em, -0.025em);}
+  10% { clip-path: polygon(0 40%, 100% 40%, 100% 50%, 0 50%); transform: translate(0.025em, 0.05em);}
+  30% { clip-path: polygon(0 60%, 100% 60%, 100% 80%, 0 80%); transform: translate(-0.025em, 0.025em);}
+  50% { clip-path: polygon(0 10%, 100% 10%, 100% 20%, 0 20%); transform: translate(0.05em, -0.01em);}
+  70% { clip-path: polygon(0 75%, 100% 75%, 100% 90%, 0 90%); transform: translate(-0.01em, 0.03em);}
+  90% { clip-path: polygon(0 50%, 100% 50%, 100% 65%, 0 65%); transform: translate(0.03em, -0.04em);}
+}
+
+@keyframes glitch-anim-bottom {
+  0%, 100% { clip-path: polygon(0 70%, 100% 70%, 100% 100%, 0 100%); transform: translate(0.05em, 0.025em);}
+  15% { clip-path: polygon(0 55%, 100% 55%, 100% 65%, 0 65%); transform: translate(-0.02em, -0.03em);}
+  35% { clip-path: polygon(0 30%, 100% 30%, 100% 45%, 0 45%); transform: translate(0.03em, 0.01em);}
+  55% { clip-path: polygon(0 85%, 100% 85%, 100% 95%, 0 95%); transform: translate(-0.04em, -0.02em);}
+  75% { clip-path: polygon(0 20%, 100% 20%, 100% 35%, 0 35%); transform: translate(0.01em, 0.04em);}
+  95% { clip-path: polygon(0 40%, 100% 40%, 100% 55%, 0 55%); transform: translate(-0.03em, 0.05em);}
+}
+
+// Apply the glitch animation to the pseudo-elements
+.glitch { // Add this class to element needing glitch
+    position: relative;
+   // Optional: apply continuous animation to base text too for slight flicker
+   // animation: glitch-flicker 0.1s infinite steps(1);
+
+   &::before,
+   &::after {
+     content: attr(data-text);
+     position: absolute;
+     top: 0;
+     left: 0;
+     width: 100%;
+     height: 100%;
+     background: $color-background; // Should match the parent's background
+     overflow: hidden;
+   }
+
+    &::before {
+       left: 2px;
+       text-shadow: -1px 0 $color-secondary; // Glitch color 1 (Magenta)
+       animation: glitch-anim-top 3s infinite linear alternate-reverse;
+    }
+
+    &::after {
+        left: -2px;
+        text-shadow: -1px 0 $color-primary; // Glitch color 2 (Cyan)
+       animation: glitch-anim-bottom 2.5s infinite linear alternate-reverse; // Slightly different timing
+    }
+}
+
+
+// Keyframes for Fade In effect (used by JS maybe, or simple CSS)
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+// Keyframes for Fade In + Slide Up (common entrance animation)
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 40px, 0); // Start 40px lower
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0); // End at original position
+  }
+}
+
+// Add classes to apply these with CSS if needed, e.g.,
+// .fade-in { animation: fadeIn 0.5s ease-out forwards; }
+// .fade-in-up { animation: fadeInUp 0.7s ease-out forwards; }
+// Often triggered by JS using Intersection Observer for better control
+
+// Add more specific animations for buttons, menus, loading indicators etc.
+
+
+// === CSS class-based animations ===
+// These can be added directly to elements without JS (or toggled by JS)
+
+// -- Loading Spinner --
+.spinner {
+    width: 40px;
+    height: 40px;
+    position: relative;
+    margin: 20px auto; // Center spinner example
+
+    &::before { // Using a single element spinner
+        content: '';
+        box-sizing: border-box;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 40px;
+        height: 40px;
+        margin-top: -20px;
+        margin-left: -20px;
+        border-radius: 50%;
+        border: 3px solid $color-border; // Light border background
+        border-top-color: $color-primary; // Active color segment
+        animation: spin 1s linear infinite;
+    }
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+// -- Background Animations (Example: subtle star field) --
+// This might be better handled with JS/Canvas for performance,
+// but a CSS-only version can be simple:
+.animated-background {
+    // Add to body or a container
+    // background: $color-background url('path/to/stars.png') repeat; // Static star image
+    // background-size: cover;
+    // animation: move-background 20s linear infinite;
+}
+
+@keyframes move-background {
+  from { background-position: 0 0; }
+  to { background-position: 1000px 500px; } // Adjust values for speed/direction
+}
